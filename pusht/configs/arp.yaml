@@ -100,7 +100,7 @@ logging:
   id: null
   mode: offline
   name: ""
-  project: iclr2025
+  project: null
   tags: []
 
 

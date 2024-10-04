@@ -54,24 +54,6 @@ def make_optimizer_and_scheduler(cfg, policy):
         ]
         optimizer = torch.optim.AdamW(optimizer_params_dicts, lr=cfg.training.lr, weight_decay=cfg.training.weight_decay)
         lr_scheduler = None
-    elif cfg.policy.name.startswith("autoregressive"):
-        optimizer_params_dicts = [
-            { "params": [p for n, p in policy.named_parameters() if not n.startswith("model.backbone") and p.requires_grad]},
-            { "params": [p for n, p in policy.named_parameters() if n.startswith("model.backbone") and p.requires_grad], "lr": cfg.training.lr_backbone}
-        ]
-        if hasattr(cfg.training, 'lr_scheduler') and cfg.training.lr_scheduler == 'cosine': # not used
-            optimizer = torch.optim.AdamW(optimizer_params_dicts, lr=cfg.training.lr, weight_decay=cfg.training.weight_decay)
-            from diffusers.optimization import get_scheduler
-            lr_scheduler = get_scheduler(
-                cfg.training.lr_scheduler,
-                optimizer=optimizer,
-                num_warmup_steps=cfg.training.lr_warmup_steps,
-                num_training_steps=cfg.training.offline_steps,
-            )
-        else:
-            optimizer = torch.optim.AdamW(optimizer_params_dicts, lr=cfg.training.lr, weight_decay=cfg.training.weight_decay)
-            lr_scheduler = None
-    
     elif cfg.policy.name == "diffusion":
         optimizer = torch.optim.Adam(
             policy.diffusion.parameters(),
@@ -96,7 +78,22 @@ def make_optimizer_and_scheduler(cfg, policy):
         optimizer = VQBeTOptimizer(policy, cfg)
         lr_scheduler = VQBeTScheduler(optimizer, cfg)
     else:
-        raise NotImplementedError()
+        optimizer_params_dicts = [
+            { "params": [p for n, p in policy.named_parameters() if not n.startswith("model.backbone") and p.requires_grad]},
+            { "params": [p for n, p in policy.named_parameters() if n.startswith("model.backbone") and p.requires_grad], "lr": cfg.training.lr_backbone}
+        ]
+        if hasattr(cfg.training, 'lr_scheduler') and cfg.training.lr_scheduler == 'cosine': # not used
+            optimizer = torch.optim.AdamW(optimizer_params_dicts, lr=cfg.training.lr, weight_decay=cfg.training.weight_decay)
+            from diffusers.optimization import get_scheduler
+            lr_scheduler = get_scheduler(
+                cfg.training.lr_scheduler,
+                optimizer=optimizer,
+                num_warmup_steps=cfg.training.lr_warmup_steps,
+                num_training_steps=cfg.training.offline_steps,
+            )
+        else:
+            optimizer = torch.optim.AdamW(optimizer_params_dicts, lr=cfg.training.lr, weight_decay=cfg.training.weight_decay)
+            lr_scheduler = None
 
     return optimizer, lr_scheduler
 

@@ -150,3 +150,9 @@ rlb/outputs
 pusht/weights
 aloha/weights
 rlb/weights
+
+rlb/point-renderer
+
+real-robot/outputs
+real-robot/weights
+real-robot/data

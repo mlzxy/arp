@@ -171,17 +171,14 @@ class MultiViewTransformer(nn.Module):
                 dropout=cfg.attn_dropout,
             ),
         )
+
         get_attn_ff = lambda: PreNorm(cfg.attn_dim, FeedForward(cfg.attn_dim))
-        get_attn_attn, get_attn_ff = map(cache_fn, (get_attn_attn, get_attn_ff))
         # self-attention layers
         self.layers = nn.ModuleList([])
-        cache_args = {"_cache": cfg.weight_tie_layers}
         attn_depth = self.depth
 
         for _ in range(attn_depth):
-            self.layers.append(
-                nn.ModuleList([get_attn_attn(**cache_args), get_attn_ff(**cache_args)])
-            )
+            self.layers.append(nn.ModuleList([get_attn_attn(), get_attn_ff()]))
 
         self.up0 = Conv2DUpsampleBlock(
             self.input_dim_before_seq,
@@ -372,9 +369,10 @@ class MultiViewTransformer(nn.Module):
         self.renderer.reset()
 
 
-class MVTWrapper(nn.Module):
-    def __init__(self, cfg: DictConfig, render_device="cuda:0"):
+class PolicyNetwork(nn.Module):
+    def __init__(self, cfg: DictConfig, env_cfg: DictConfig, render_device="cuda:0"):
         super().__init__()
+        self.env_cfg = env_cfg
 
         # for verifying the input
         self.img_feat_dim = cfg.img_feat_dim
@@ -498,8 +496,9 @@ class MVTWrapper(nn.Module):
         self.renderer.reset()
 
 
-class RVTAgent:
-    def __init__(self, network: nn.Module, rvt_cfg: DictConfig, env_cfg: DictConfig, log_dir=""):
+class Policy:
+    def __init__(self, network: nn.Module, rvt_cfg: DictConfig, log_dir=""):
+        env_cfg = network.env_cfg
         self._network = network
         self._num_rotation_classes = rvt_cfg.num_rotation_classes
         self._rotation_resolution = 360 / self._num_rotation_classes

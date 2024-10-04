@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, List, Dict, Tuple
 
 
 @dataclass
@@ -90,26 +90,26 @@ class ACTConfig:
     chunk_size: int = 100
     n_action_steps: int = 100
 
-    input_shapes: dict[str, list[int]] = field(
+    input_shapes: Dict[str, List[int]] = field(
         default_factory=lambda: {
             "observation.images.top": [3, 480, 640],
             "observation.state": [14],
         }
     )
-    output_shapes: dict[str, list[int]] = field(
+    output_shapes: Dict[str, List[int]] = field(
         default_factory=lambda: {
             "action": [14],
         }
     )
 
     # Normalization / Unnormalization
-    input_normalization_modes: dict[str, str] = field(
+    input_normalization_modes: Dict[str, str] = field(
         default_factory=lambda: {
             "observation.images.top": "mean_std",
             "observation.state": "mean_std",
         }
     )
-    output_normalization_modes: dict[str, str] = field(
+    output_normalization_modes: Dict[str, str] = field(
         default_factory=lambda: {
             "action": "mean_std",
         }

@@ -1,0 +1,114 @@
+hydra:
+  job:
+    name: default
+    chdir: false
+  run:
+    dir: outputs/${hydra.job.name}/${now:%Y-%m-%d_%H-%M}
+  
+# ================================================ #
+
+py_module: rvt
+
+model:
+  weights: null
+
+  hp:
+    depth: 8
+    img_size: 220
+    add_proprio: true
+    proprio_dim: 4 # 4, time is not part of the state
+    add_lang: true
+    lang_dim: 512
+    lang_len: 77
+    img_feat_dim: 3
+    feat_dim: 220 # (72 * 3) + 2 + 2
+    im_channels: 64
+    attn_dim: 512
+    attn_heads: 8
+    attn_dim_head: 64
+    activation: "lrelu"
+    weight_tie_layers: false
+    attn_dropout: 0.1
+    decoder_dropout: 0.0
+    img_patch_size: 11
+    final_dim: 64
+    self_cross_ver: 1
+    add_corr: true
+    add_pixel_loc: true
+    add_depth: true
+    pe_fix: true
+    place_with_mean: true
+    gt_hm_sigma: 1.5
+    augmentation_ratio: 0.1
+    move_pc_in_bound: True
+
+    # lr should be thought on per sample basis
+    # effective lr is multiplied by bs * num_devices
+    lr: 1e-4
+    warmup_steps: 2000
+    optimizer_type: lamb
+    lr_cos_dec: true
+    add_rgc_loss: true
+    transform_augmentation: true
+    transform_augmentation_xyz: [0.125, 0.125, 0.125]
+    transform_augmentation_rpy: [0.0, 0.0, 45.0]
+    lambda_weight_l2: 1e-6
+    num_rotation_classes: 72
+
+    cos_dec_max_step: -1 # will be override during training
+
+env:
+  tasks: all
+  cameras: ["front", "left_shoulder", "right_shoulder", "wrist"]
+  scene_bounds: [-0.3, -0.5, 0.6, 0.7, 0.5, 1.6] # [x_min, y_min, z_min, x_max, y_max, z_max] - the metric volume to be voxelized
+  image_size: 128
+  time_in_state: true
+  voxel_size: 100
+  episode_length: 25
+  rotation_resolution: 5
+  origin_style_state: true
+
+
+train:
+  bs: 6
+  demo_folder: ./data/train
+  epochs: 15 
+  num_gpus: 1
+  num_workers: 8 # need larger value
+  num_transitions_per_epoch: 160000
+  disp_freq: 100
+  cached_dataset_path: null
+  save_freq: 10000
+  eval_mode: false
+  k2k_sample_ratios: 
+    place_cups: 1.0
+    stack_cups: 1.0
+    close_jar: 1.0
+    push_buttons: 1.0
+    meat_off_grill: 1.0
+    stack_blocks: 1.0
+    reach_and_drag: 1.0
+    slide_block_to_color_target: 1.0
+    place_shape_in_shape_sorter: 1.0
+    open_drawer: 1.0
+    sweep_to_dustpan_of_size: 1.0
+    put_groceries_in_cupboard: 1.0
+    light_bulb_in: 1.0
+    turn_tap: 1.0
+    insert_onto_square_peg: 1.0
+    put_item_in_drawer: 1.0
+    put_money_in_safe: 1.0
+    place_wine_at_rack_location: 1.0
+
+
+eval:
+  datafolder: ./data/test
+  episode_num: 25
+  start_episode: 0
+  headless: true
+  save_video: false
+  device: 0
+
+
+output_dir: ${hydra:run.dir}
+wandb: null

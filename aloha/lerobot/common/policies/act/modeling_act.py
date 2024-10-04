@@ -33,7 +33,7 @@ from huggingface_hub import PyTorchModelHubMixin
 from torch import Tensor, nn
 from torchvision.models._utils import IntermediateLayerGetter
 from torchvision.ops.misc import FrozenBatchNorm2d
-from typing import Optional, Union
+from typing import Optional, Union, Dict, Tuple, List
 
 from lerobot.common.policies.act.configuration_act import ACTConfig
 from lerobot.common.policies.normalize import Normalize, Unnormalize
@@ -50,7 +50,7 @@ class ACTPolicy(nn.Module, PyTorchModelHubMixin):
     def __init__(
         self,
         config: Optional[ACTConfig] = None,
-        dataset_stats: Optional[dict[str, dict[str, Tensor]]] = None,
+        dataset_stats: Optional[Dict[str, Dict[str, Tensor]]] = None,
     ):
         """
         Args:
@@ -88,7 +88,7 @@ class ACTPolicy(nn.Module, PyTorchModelHubMixin):
             self._action_queue = deque([], maxlen=self.config.n_action_steps)
 
     @torch.no_grad
-    def select_action(self, batch: dict[str, Tensor]) -> Tensor:
+    def select_action(self, batch: Dict[str, Tensor]) -> Tensor:
         """Select a single action given environment observations.
 
         This method wraps `select_actions` in order to return one action at a time for execution in the
@@ -133,7 +133,7 @@ class ACTPolicy(nn.Module, PyTorchModelHubMixin):
             self._action_queue.extend(actions.transpose(0, 1))
         return self._action_queue.popleft()
 
-    def forward(self, batch: dict[str, Tensor]) -> dict[str, Tensor]:
+    def forward(self, batch: Dict[str, Tensor]) -> Dict[str, Tensor]:
         """Run the batch through the model and compute the loss for training or validation."""
         batch = self.normalize_inputs(batch)
         batch["observation.images"] = torch.stack([batch[k] for k in self.expected_image_keys], dim=-4)
@@ -271,7 +271,7 @@ class ACT(nn.Module):
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
 
-    def forward(self, batch: dict[str, Tensor]) -> tuple[Tensor, Union[tuple[Tensor, Tensor], tuple[None, None]]]:
+    def forward(self, batch: Dict[str, Tensor]) -> Tuple[Tensor, Union[Tuple[Tensor, Tensor], Tuple[None, None]]]:
         """A forward pass through the Action Chunking Transformer (with optional VAE encoder).
 
         `batch` should have the following structure:

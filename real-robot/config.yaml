@@ -1,0 +1,50 @@
+hydra:
+  job:
+    name: default
+    chdir: false
+  run:
+    dir: outputs/${hydra.job.name}/${now:%Y-%m-%d_%H-%M}
+  
+
+
+output_dir: ${hydra:run.dir}
+wandb: null
+device: 0
+
+data:
+  folder: './data/demonstrations'
+  train_episodes: [78, 4, 72, 37, 16, 61, 59, 23, 66, 11, 3, 9, 75, 71, 7, 34, 43, 49, 68, 62, 15, 27, 50, 57, 20, 18, 12, 65, 44, 33, 39, 76, 0, 46, 31, 74, 8, 2, 28, 55, 22, 10, 67, 60, 17, 58, 25, 52, 73, 5, 79, 36, 38, 32, 45, 1, 77, 21, 56, 64, 13, 19, 14, 63, 69, 6, 48, 42, 35]
+  eval_episodes: [51, 26, 70, 54, 29, 30, 47, 40, 53, 24]
+
+train: 
+  lr: 5e-5 # 1.25e-5
+  batch_size: 16
+  num_workers: 6
+
+  lambda_weight_l2: 1e-4 
+  warmup_steps: 1000
+  num_steps: 50000
+  save_freq: 1000
+  eval_freq: 1000
+  disp_freq: 100
+
+
+model:
+  image_size: 420
+  patch_size: 14
+  hidden_dim: 128
+  dropout: 0.1
+  pre_norm: False
+  feedforward_activation: relu
+  dim_feedforward: 256
+  n_heads: 8
+  n_encoder_layers: 8
+
+  depth: 4
+
+  max_seq_len: 40
+  max_chunk_size: 40
+
+  trans_aug_range: [0.1, 0.05, 0.05]
+  rot_aug_range: [0, 0, 45]
+

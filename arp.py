@@ -1186,7 +1186,7 @@ class AutoRegressivePolicy(nn.Module):
             _tks = tk_codes if token['is_continuous'] and not self.token_predictors[i].IS_CONTINUOUS else tks
             is_training = self.token_predictors[i].training
             self.token_predictors[i].train(True)
-            loss_dict = self.token_predictors[i](embs_hat[mask], label=_tks[mask][..., :token['dim']], **contexts)
+            loss_dict = self.token_predictors[i](embs_hat[mask], label=_tks[mask][..., :token['dim']], log_prob=log_prob, **contexts)
             self.token_predictors[i].train(is_training)
             if log_prob:
                 ll = sum(loss_dict.pop('log_prob'))

@@ -398,9 +398,10 @@ class MultiViewTransformer(nn.Module):
 
 #region MVTWrapper 
 
-class MVTWrapper(nn.Module):
-    def __init__(self, cfg, render_device="cuda:0"):
+class PolicyNetwork(nn.Module):
+    def __init__(self, cfg, env_cfg, render_device="cuda:0"):
         super().__init__()
+        self.env_cfg = env_cfg
         self.num_rot = cfg.num_rotation_classes
         self.stage2_zoom_scale = cfg.stage2_zoom_scale # st_sca
         self.stage2_waypoint_label_noise = cfg.stage2_waypoint_label_noise # st_wpt_loc_aug
@@ -574,9 +575,10 @@ class MVTWrapper(nn.Module):
 
 #region  RVTAgent
 
-class RVTAgent(nn.Module):
-    def __init__(self, network: nn.Module, rvt_cfg: DictConfig, env_cfg: DictConfig, log_dir=""):
+class Policy(nn.Module):
+    def __init__(self, network: nn.Module, rvt_cfg: DictConfig, log_dir=""):
         super().__init__()
+        env_cfg = network.env_cfg
         self._network = network
         self._num_rotation_classes = rvt_cfg.num_rotation_classes
         self._rotation_resolution = 360 / self._num_rotation_classes
@@ -1086,27 +1088,3 @@ class RVTAgent(nn.Module):
         )
 
 #endregion ############################
-
-
-if __name__ == "__main__":
-    from utils import load_hydra_config
-    cfg = load_hydra_config('../config/v2.yaml')
-    device = torch.device(2)
-    mvtwrapper = MVTWrapper(cfg.model.rvt, render_device="cuda:2").to(device)
-    agent = RVTAgent(mvtwrapper, cfg.model.rvt, cfg.env)
-    agent.build(False, device)
-    agent.load_clip()
-    agent.eval()
-    agent.load('/common/users/xz653/Workspace/iclr2025/RVT/runs/download/rvt2/model_99.pth')
-    state_dict = torch.load('/common/users/xz653/Workspace/iclr2025/RVT/runs/download/rvt2/model_99.pth')['model_state']
-    new_state_dict = agent._network.state_dict()
-    for k, v in state_dict.items():
-        new_v = new_state_dict[k]
-        print('key:', k)
-        assert torch.all(v.cpu() == new_v.cpu())
-
-    agent.load('/common/users/xz653/Workspace/iclr2025/RVT/runs/download/rvt2/model_99.pth')
-    with torch.no_grad():
-        obs = torch.load("/common/home/xz653/Desktop/obs.pth", map_location=device)
-        agent.act(0, obs)
-        print("")
