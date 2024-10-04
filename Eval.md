@@ -20,7 +20,7 @@ cd rlb
 python3 eval.py config=./configs/arp_plus.yaml  model.weights=./weights/arp_plus_model_70000.pth  hydra.job.name=eval.arp_plus  eval.device=0  output_dir=outputs/eval.arp_plus/`date +"%Y-%m-%d_%H-%M"` 
 ```
 
-Adding `eval.save_video=True` will save the rotating videos like the one in [demo.mp4](demo.mp4) to `rlb/outputs/recording`. But the evaluation will get extremely slow.
+Adding `eval.save_video=True` will save the rotating videos like the one in [assets/demo.mp4](assets/demo.mp4) to `rlb/outputs/recording`. But the evaluation will get extremely slow.
 
 Ensure you are running `eval.py` in a machine with GUI and `DISPLAY` environment variable is set. In other cases, check the tip below.  
 

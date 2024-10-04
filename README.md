@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/mlzxy/arp/main/assets/demo.mp4
 
 We present an imitation learning architecture based on autoregressive action sequence learning. We demonstrate strong results on Push-T, ALOHA, RLBench, and real robot experiments. For details, please check our [paper](https://arxiv.org/abs/todo). 
 
----
+## Getting Started
 
 To install, clone this repository and recreate the python environment according to [ENV.md](ENV.md), and download datasets and pretrained models according to [Download.md](Download.md).
 
@@ -19,9 +19,7 @@ To install, clone this repository and recreate the python environment according 
 - To train ARP in Push-T, ALOHA, or RLBench, follow the instructions in [Train.md](Train.md).
 
 
----
-
-In addition
+## More Experiments
 
 1. To count MACs and parameters, please check [profile.ipynb](profile.ipynb). 
 
@@ -37,7 +35,10 @@ In addition
     - The only hairy part of the code is the `generate` function, which is in principle simple but have some engineering details. Other part of the code shall be self-explanatory.
     - Note, action decoder (in paper) are named as predictor in this file.
 
----
+
+
+
+## Citation
 
 In case this work is helpful for your research, please cite: 
 
