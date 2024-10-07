@@ -5,7 +5,13 @@
 ![](assets/main-fig.jpg)
 
 
+
 We present an imitation learning architecture based on autoregressive action sequence learning. We demonstrate strong results on Push-T, ALOHA, RLBench, and real robot experiments. For details, please check our [paper](https://arxiv.org/abs/2410.03132). 
+
+
+https://github.com/user-attachments/assets/43ec86b4-e814-46e6-b693-326d6c9dfca4
+
+
 
 ## Getting Started
 
