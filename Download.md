@@ -1,8 +1,8 @@
 # Dataset Download
 
-All datasets and pretrained weights are stored in a box folder at https://rutgers.box.com/s/uzozemx67kje58ycy3lyzf1zgddz8tyq. 
+All datasets and pretrained weights are stored in a box folder at https://rutgers.box.com/s/uzozemx67kje58ycy3lyzf1zgddz8tyq. These files are located in `datasets` and `weights` folders.
 
-> If you configure [rclone](https://rclone.org/) with box, then you can download data from command line. 
+> It takes a lot of time to download each file from browser manually. Therefore, I prepare a single compressed file `all_datasets_and_weights.tar.gz` that includes all files (in that box folder). You can choose to just download that and extract it. It will extract to a folder called `release` and you can find all files inside. 
 
 
 ## Push-T
@@ -53,17 +53,17 @@ rm -f RLBench.tar && cd ..
 
 This dataset contains the original pre-generated RLBench train / test demonstration from [peract](https://github.com/peract/peract). However, it is much smaller (only 6GB vs hundreds of GBs). Therefore, it is much easier to get started with.
 
-The reason is that I only keep the key frames from the original dataset. The context is: 
+The reason is that I only keep the key frames from the original dataset. The back-story is: 
 
 1. RLBench has a key frame extraction procedure, see `keypoint_discovery` function in [rlb/dataset.py](rlb/dataset.py). Many existing works use this code snippet. 
 2. There has been a long-standing "bug", regarding data sampling, in existing works. This "bug" significantly increases the sampling ratio on key frames. Read more into this issue here: https://github.com/peract/peract/issues/6#issuecomment-1355555980.  
 3. Based on my personal experience, I found only key-frames contribute to the learning of the policy. Therefore, I simplify the implementation ("fix" this "bug") and trim the training set. 
-4. I optimize a little bit so evaluation do not read the full testing episodes, in doing so, the test set is trimmed. 
+4. I optimize the code a little bit so evaluation do not read the full testing episodes, in doing so, the test set is also trimmed. 
 
 
 # Pretrained Weights
 
-Here only the instructions on downloading the models of our main results are provided. The models for other experiments are stored in the `training-logs` folder (in box) and are detailed in the [Experiments.md](Experiments.md)
+Here only the instructions on downloading the models of our main results are provided. The training logs of other experiments are stored in the `training-logs` folder (in box). Those experiments are detailed in the [Experiments.md](Experiments.md)
 
 
 
