@@ -8,7 +8,10 @@ Recreate the Python 3.8 conda environment:
 conda env create -f environment.yaml 
 ```
 
-Newer Python versions should work. To install the dependencies on an existing environment, first downgrade pip, setuptools and wheel (for compatibility with `gym==0.21.0`):
+
+### Use a Different Python Environment (Optional)
+
+If you want to use a different python environment, for example a newer version of python. First downgrade pip, setuptools and wheel (for compatibility with `gym==0.21.0`):
 
 ```bash
 pip install pip==21 setuptools==65.5.0 wheel==0.38.0
