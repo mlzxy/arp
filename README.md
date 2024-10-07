@@ -1,6 +1,6 @@
 # Autoregressive Action Sequence Learning for Robotic Manipulation
 
-[![arXiv](https://img.shields.io/badge/arXiv-2410.03132-b31b1b.svg)](https://arxiv.org/abs/2410.03132) <!-- rlbench sota badge -->
+[![arXiv](https://img.shields.io/badge/arXiv-2410.03132-b31b1b.svg)](https://arxiv.org/abs/2410.03132)  [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/autoregressive-action-sequence-learning-for/robot-manipulation-on-rlbench)](https://paperswithcode.com/sota/robot-manipulation-on-rlbench?autoregressive-action-sequence-learning-for)
 
 ![](assets/main-fig.jpg)
 
