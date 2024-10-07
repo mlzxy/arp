@@ -1,13 +1,11 @@
 # Autoregressive Action Sequence Learning for Robotic Manipulation
 
-[![arXiv](https://img.shields.io/badge/arXiv-todo-b31b1b.svg)](https://arxiv.org/abs/todo) <!-- rlbench sota badge -->
+[![arXiv](https://img.shields.io/badge/arXiv-2410.03132-b31b1b.svg)](https://arxiv.org/abs/2410.03132) <!-- rlbench sota badge -->
 
 ![](assets/main-fig.jpg)
 
-https://raw.githubusercontent.com/mlzxy/arp/main/assets/demo.mp4
 
-
-We present an imitation learning architecture based on autoregressive action sequence learning. We demonstrate strong results on Push-T, ALOHA, RLBench, and real robot experiments. For details, please check our [paper](https://arxiv.org/abs/todo). 
+We present an imitation learning architecture based on autoregressive action sequence learning. We demonstrate strong results on Push-T, ALOHA, RLBench, and real robot experiments. For details, please check our [paper](https://arxiv.org/abs/2410.03132). 
 
 ## Getting Started
 
@@ -25,7 +23,7 @@ To install, clone this repository and recreate the python environment according 
 
 1. To run baselines and ablation studies, please check [Experiments.md](Experiments.md). We also provide a much cleaner implementation of RVT-2. 
 
-2. Please check [real-robot/inference.ipynb](real-robot/readme.ipynb), if you want to learn more about the real robot experiment.
+2. Please check [real-robot/readme.ipynb](real-robot/readme.ipynb), if you want to learn more about the real robot experiment.
 
 3. Visualization on Likelihood Inference and Prediction with Human Guidance. Please check [pusht/qualitative-visualize.ipynb](pusht/qualitative-visualize.ipynb). 
 
@@ -47,9 +45,9 @@ In case this work is helpful for your research, please cite:
       title={Autoregressive Action Sequence Learning for Robotic Manipulation}, 
       author={Xinyu Zhang, Yuhan Liu, Haonan Chang, Liam Schramm, and Abdeslam Boularias},
       year={2024},
-      eprint={arXiv:todo},
+      eprint={arXiv:2410.03132},
       archivePrefix={arXiv},
       primaryClass={cs.LG},
-      url={https://arxiv.org/abs/todo}, 
+      url={https://arxiv.org/abs/2410.03132}, 
 }
 ```

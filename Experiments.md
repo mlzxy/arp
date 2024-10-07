@@ -1,4 +1,4 @@
-Here we document some experiments that are included in the paper. For most experiments, we only list the configuration files and training logs (without detailing the training command). The training commands can be found in [Train.md](Train.md). 
+Here we document some experiments that are included in the paper. For most experiments, we only list the configuration files (without detailing the training command). 
 
 Our training & eval logs can be found at `training-logs` in the box folder https://rutgers.box.com/s/uzozemx67kje58ycy3lyzf1zgddz8tyq. 
 
