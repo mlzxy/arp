@@ -73,9 +73,12 @@ export MAX_JOBS=1 # make it larger will speed up installation, buy may cause fai
 
 #### CoppeliaSim & PyRep & RLBench
 
-Please follow the instruction in https://github.com/stepjam/RLBench. 
+Please follow the instruction in ~~https://github.com/stepjam/RLBench~~ https://github.com/mlzxy/RLBench.arp. 
 
 If your server does not provide GUI and sudo permission, like mine, please follow the headless rendering tips for rlbench in [Eval.md](Eval.md).
+
+> Note 📑: The only difference between `RLBench.arp` and the official RLBench (on 10/15/2024) is that I comment out an unnecessary length check at https://github.com/stepjam/RLBench/blob/b80e51feb3694d9959cb8c0408cd385001b01382/rlbench/utils.py#L94. This enables me to simplify the RLBench dataset. See issue [#1](../../issues/1). 
+
 
 #### Faster Point-Renderer (optional but recommended)
 
