@@ -77,7 +77,7 @@ Please follow the instruction in ~~https://github.com/stepjam/RLBench~~ https://
 
 If your server does not provide GUI and sudo permission, like mine, please follow the headless rendering tips for rlbench in [Eval.md](Eval.md).
 
-> Note 📑: The only difference between `RLBench.arp` and the official RLBench (on 10/15/2024) is that I comment out an unnecessary length check at https://github.com/stepjam/RLBench/blob/b80e51feb3694d9959cb8c0408cd385001b01382/rlbench/utils.py#L94. This enables me to simplify the RLBench dataset. See issue [#1](../../issues/1). 
+> Note 📑: The only difference between `RLBench.arp` and the RLBench from PerAct (with rich language variants) is that I comment out an unnecessary length check at https://github.com/mlzxy/RLBench.arp/blob/3f57db0801b783a6c55fe1bf5bfea051882a17e9/rlbench/utils.py#L119. This enables me to simplify the RLBench dataset. See issue [#1](../../issues/1). 
 
 
 #### Faster Point-Renderer (optional but recommended)
@@ -90,6 +90,7 @@ git clone https://github.com/NVlabs/RVT
 cp -rf RVT/rvt/libs/point-renderer ./
 rm -rf ./RVT/
 cd ./point-renderer
+# remove line "from mvt.utils import ForkedPdb" from `point_renderer/rvt_renderer.py`
 pip install -e .
 cd ../../
 ```
