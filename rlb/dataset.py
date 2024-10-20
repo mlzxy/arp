@@ -82,16 +82,16 @@ def retreive_full_observation(essential_obs, episode_path, i, load_mask=False, s
     far = essential_obs.misc['%s_camera_far' % (CAMERA_WRIST)]
     obs['wrist_depth'] = near + obs['wrist_depth'] * (far - near)
 
-    obs['front_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['front_depth'], 
+    obs['front_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['front_depth'],
                                                                                     essential_obs.misc['front_camera_extrinsics'],
                                                                                     essential_obs.misc['front_camera_intrinsics'])
-    obs['left_shoulder_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['left_shoulder_depth'], 
+    obs['left_shoulder_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['left_shoulder_depth'],
                                                                                             essential_obs.misc['left_shoulder_camera_extrinsics'],
                                                                                             essential_obs.misc['left_shoulder_camera_intrinsics'])
-    obs['right_shoulder_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['right_shoulder_depth'], 
+    obs['right_shoulder_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['right_shoulder_depth'],
                                                                                             essential_obs.misc['right_shoulder_camera_extrinsics'],
                                                                                             essential_obs.misc['right_shoulder_camera_intrinsics'])
-    obs['wrist_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['wrist_depth'], 
+    obs['wrist_point_cloud'] = VisionSensor.pointcloud_from_depth_and_camera_params(obs['wrist_depth'],
                                                                                     essential_obs.misc['wrist_camera_extrinsics'],
                                                                                     essential_obs.misc['wrist_camera_intrinsics'])
     return obs
@@ -155,8 +155,8 @@ def get_reasonable_low_dim_state(essential_obs): # dim=18
 
 class TransitionDataset(Dataset):
     def __init__(self, root: str, tasks: List[str], cameras:List[str]=["front", "left_shoulder", "right_shoulder", "wrist"],
-                batch_num: int=1000, batch_size: int=6, scene_bounds=[-0.3,-0.5,0.6,0.7,0.5,1.6], 
-                voxel_size:int=100, rotation_resolution:int=5, cached_data_path=None, 
+                batch_num: int=1000, batch_size: int=6, scene_bounds=[-0.3,-0.5,0.6,0.7,0.5,1.6],
+                voxel_size:int=100, rotation_resolution:int=5, cached_data_path=None,
                 origin_style_state=True,
                 episode_length=25, time_in_state=False, k2k_sample_ratios={}, o2k_window_size=10):
         super().__init__()
@@ -200,14 +200,14 @@ class TransitionDataset(Dataset):
                             obs = pickle.load(f)
                         with open(osp.join(ep, VARIATION_NUMBER_PICKLE), 'rb') as f:
                             obs.variation_number = pickle.load(f)
-                        self.data[task][episode]['obs'] = obs 
-            
+                        self.data[task][episode]['obs'] = obs
+
             if cached_data_path:
                 if not osp.exists(osp.dirname(cached_data_path)):
                     os.makedirs(osp.dirname(cached_data_path))
                 torch.save(self.data, cached_data_path)
-                
-    
+
+
     def __len__(self): return self._num_batches
 
     def get(self, **kwargs):
@@ -216,7 +216,7 @@ class TransitionDataset(Dataset):
     def __getitem__(self, _):
         batch = defaultdict(list)
         for _ in range(self._batch_size):
-            task = random.choice(list(self.data.keys())) 
+            task = random.choice(list(self.data.keys()))
             episode = random.choice(list(self.data[task].keys()))
             episode_idx = int(episode[len('episode'):])
             episode_path = osp.join(self.root, task, 'all_variations/episodes', episode)
@@ -237,25 +237,25 @@ class TransitionDataset(Dataset):
                 kp = query_next_kf(obs_frame_id, episode['keypoints'], return_index=True)
 
             # --------------------------------------- #
-                
+
             kp_frame_id = episode['keypoints'][kp]
             variation_id = episode['obs'].variation_number
             essential_obs = episode['obs'][obs_frame_id]
-            essential_kp_obs = episode['obs'][kp_frame_id] 
+            essential_kp_obs = episode['obs'][kp_frame_id]
             obs_media_dict = retreive_full_observation(essential_obs, episode_path, obs_frame_id)
 
             if self.origin_style_state:
                 curr_low_dim_state = np.array([essential_obs.gripper_open, *essential_obs.gripper_joint_positions])
                 if self.include_time_in_state:
                     curr_low_dim_state = np.concatenate(
-                        [curr_low_dim_state, 
+                        [curr_low_dim_state,
                         [encode_time(kp, episode_length=self.episode_length)]]
                     ).astype(np.float32)
             else:
                 curr_low_dim_state = get_reasonable_low_dim_state(essential_obs)
-            
+
             sample_dict = {
-                "lang_goal_tokens": clip.tokenize(load_pkl(osp.join(episode_path, DESC_PICKLE))[0])[0].numpy(), 
+                "lang_goal_tokens": clip.tokenize(load_pkl(osp.join(episode_path, DESC_PICKLE))[0])[0].numpy(),
                 "lang_goal_embs": episode['lang_emb'],
                 "keypoint_idx": kp,
                 "kp_frame_idx": kp_frame_id,
@@ -271,24 +271,24 @@ class TransitionDataset(Dataset):
                 "low_dim_state": curr_low_dim_state,
 
                 **obs_media_dict
-            } 
-            
+            }
+
             for k, v in sample_dict.items():
                 batch[k].append(v)
-            
+
             # reset
             task = episode = kp = obs_frame_id = None
 
         # lang_goals = batch.pop('lang_goals')
         batch = {k: np.array(v) for k, v in batch.items()}
-        batch = {k: torch.from_numpy(v.astype('float32') if v.dtype == np.float64 else v) 
+        batch = {k: torch.from_numpy(v.astype('float32') if v.dtype == np.float64 else v)
                 for k, v in batch.items()}
-        batch = {k: v.permute(0, 3, 1, 2) if k.endswith('rgb') or k.endswith('point_cloud') 
+        batch = {k: v.permute(0, 3, 1, 2) if k.endswith('rgb') or k.endswith('point_cloud')
                 else v for k,v in batch.items()}
         # batch['lang_goals'] = lang_goals
         return batch
 
-    
+
     def dataloader(self, num_workers=1, pin_memory=True, distributed=False, pin_memory_device=''):
         if distributed:
             sampler = DistributedSampler(self)
@@ -300,6 +300,26 @@ class TransitionDataset(Dataset):
                         sampler=sampler, num_workers=num_workers, pin_memory_device=pin_memory_device), sampler
 
 if __name__ == "__main__":
-    D = TransitionDataset("/scratch/xz653/datasets/rlbench/official/train", ["open_drawer"], 
-                          origin_style_state=False)
+    only_key_frames_ratios = {
+      "place_cups": 1,
+      "stack_cups": 1,
+      "close_jar": 1,
+      "push_buttons": 1,
+      "meat_off_grill": 1,
+      "stack_blocks": 1,
+      "reach_and_drag": 1,
+      "slide_block_to_color_target": 1,
+      "place_shape_in_shape_sorter": 1,
+      "open_drawer": 1,
+      "sweep_to_dustpan_of_size": 1,
+      "put_groceries_in_cupboard": 1,
+      "light_bulb_in": 1,
+      "turn_tap": 1,
+      "insert_onto_square_peg": 1,
+      "put_item_in_drawer": 1,
+      "put_money_in_safe": 1,
+      "place_wine_at_rack_location": 1
+    }
+    D = TransitionDataset("./data/train", ["open_drawer"],
+                          origin_style_state=True, time_in_state=False, k2k_sample_ratios=only_key_frames_ratios)
     D[0]
