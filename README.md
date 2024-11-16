@@ -39,8 +39,9 @@ To install, clone this repository and recreate the python environment according 
 4. If you look for supplementary video, please check the videos folder in https://rutgers.box.com/s/uzozemx67kje58ycy3lyzf1zgddz8tyq.
 
 4. [arp.py](arp.py) is a single-file implementation of our autoregressive policy. Directly running this file in command line will train an ARP model to generate binary mnist images. 
-    - The only hairy part of the code is the `generate` function, which is in principle simple but have some engineering details. Other part of the code shall be self-explanatory.
+    - The only hairy part of the code is the `generate` function, which is, in principle simple but has some engineering details.
     - Note, action decoder (in paper) are named as predictor in this file.
+    - Here are my ongoing [documentation](https://github.com/mlzxy/arp/issues/9). 
 
 
 
