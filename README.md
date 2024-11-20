@@ -2,7 +2,8 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2410.03132-b31b1b.svg)](https://arxiv.org/abs/2410.03132)  [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/autoregressive-action-sequence-learning-for/robot-manipulation-on-rlbench)](https://paperswithcode.com/sota/robot-manipulation-on-rlbench?autoregressive-action-sequence-learning-for)
 
-![](assets/main-fig.jpg)
+![](assets/keydiff.jpg)
+<!-- ![](assets/main-fig.jpg) -->
 
 
 
@@ -38,11 +39,12 @@ To install, clone this repository and recreate the python environment according 
 
 4. If you look for supplementary video, please check the videos folder in https://rutgers.box.com/s/uzozemx67kje58ycy3lyzf1zgddz8tyq.
 
-4. [arp.py](arp.py) is a single-file implementation of our autoregressive policy. Directly running this file in command line will train an ARP model to generate binary mnist images. 
+5. [arp.py](arp.py) is a single-file implementation of our autoregressive policy. Directly running this file in command line will train an ARP model to generate binary mnist images. 
     - The only hairy part of the code is the `generate` function, which is, in principle simple but has some engineering details.
     - Note, action decoder (in paper) are named as predictor in this file.
     - Here are my ongoing [documentation](https://github.com/mlzxy/arp/issues/9). 
 
+6. We provide [2d-waypoints-real-robot.ipynb](https://github.com/mlzxy/arp/blob/main/real-robot/2d-waypoints-real-robot.ipynb), which shows you how to get 2d waypoints or 2d Joint locations (which can be used as guidance for low-level actions), from URDF, camera parameters and joint positions of real robots. 
 
 
 
