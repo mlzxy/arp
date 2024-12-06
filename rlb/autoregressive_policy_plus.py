@@ -322,7 +322,7 @@ class PolicyNetwork(nn.Module):
                     for x in img_feat:
                         stdv = self.point_augment_noise * torch.rand(1, device=x.device)
                         noise = stdv * ((2 * torch.rand(*x.shape, device=x.device)) - 1)
-                        x = x + noise
+                        x += noise
 
         img = self.render(pc, img_feat, self.mvt1)
         #endregion ###########################
