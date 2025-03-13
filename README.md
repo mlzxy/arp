@@ -6,7 +6,7 @@
 <!-- ![](assets/main-fig.jpg) -->
 
 
-Updated: This work has been accepted at IEEE Robotics and Automation Letters 2025! In the Appendix D of our latest paper, we present an in-depth analysis of the effects of timestep-input and sampling strategy for RLBench training. 
+**Updated (Mar 12, 2025)**: This work has been accepted at IEEE Robotics and Automation Letters 2025! In Appendix D of our latest paper, we present an in-depth analysis of the effects of timestep-input and sampling strategy for RLBench training. 
 
 
 We present an imitation learning architecture based on autoregressive action sequence learning. We demonstrate strong results on Push-T, ALOHA, RLBench, and real robot experiments. For details, please check our [paper](https://arxiv.org/abs/2410.03132). 
