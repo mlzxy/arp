@@ -3,14 +3,16 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2410.03132-b31b1b.svg)](https://arxiv.org/abs/2410.03132)  [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/autoregressive-action-sequence-learning-for/robot-manipulation-on-rlbench)](https://paperswithcode.com/sota/robot-manipulation-on-rlbench?autoregressive-action-sequence-learning-for)
 
 ![](assets/keydiff.jpg)
-<!-- ![](assets/main-fig.jpg) -->
 
 
-**Updated (Mar 12, 2025)**: This work has been accepted at IEEE Robotics and Automation Letters 2025! In Appendix D of our latest paper, we present an in-depth analysis of the effects of timestep-input and sampling strategy for RLBench training. 
+
+
+**Updates**: 
+- (Mar 25, 2025) We add a new figure to explain why chunking autoregression works ([Fig. A3](https://raw.githubusercontent.com/mlzxy/arp/main/assets/why-chunking-autoregression-works.png)) and put back the previous more in-depth discussion section on arxiv. 
+- (Mar 12, 2025) This work has been accepted at IEEE Robotics and Automation Letters 2025! In Appendix D of our latest paper, we present an in-depth analysis of the effects of timestep-input and sampling strategy for RLBench training.
 
 
 We present an imitation learning architecture based on autoregressive action sequence learning. We demonstrate strong results on Push-T, ALOHA, RLBench, and real robot experiments. For details, please check our [paper](https://arxiv.org/abs/2410.03132). 
-
 
 
 
